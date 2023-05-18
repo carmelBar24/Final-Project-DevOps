@@ -28,7 +28,7 @@
       
       if (hasNoAuthor) {
   %>
-        <h3>Error: Please select at least one author or choose 'No Author'.</h3>
+        <h3><font color="red">Error: Please select at least one author or choose 'No Author'.</font></h3>
         <a href="<%= request.getRequestURI() %>">BACK</a>
   <%
       } else {
