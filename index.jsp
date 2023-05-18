@@ -1,3 +1,4 @@
+<%@ page language="java" %>
 <html>
 <head>
   <title>Echoing HTML Request Parameters</title>
@@ -8,27 +9,44 @@
     <input type="checkbox" name="author" value="Carmel Bar">Carmel
     <input type="checkbox" name="author" value="Yarin Magdaci">Yarin
     <input type="checkbox" name="author" value="David Daida">David
-	<input type="checkbox" name="author" value="Sher Cohen">Sher
+    <input type="checkbox" name="author" value="Sher Cohen">Sher
+    <input type="checkbox" name="author" value="error">No Author
     <input type="submit" value="Query">
   </form>
  
+  <%-- Check if form submitted and handle authors --%>
   <%
-  String[] authors = request.getParameterValues("author");
-  if (authors != null) {
+    String[] authors = request.getParameterValues("author");
+    if (authors != null && authors.length > 0) {
+      boolean hasNoAuthor = false;
+      for (String author : authors) {
+        if (author.equals("error")) {
+          hasNoAuthor = true;
+          break;
+        }
+      }
+      
+      if (hasNoAuthor) {
   %>
-    <h3>You have selected author(s):</h3>
-    <ul>
+        <h3>Error: Please select at least one author or choose 'No Author'.</h3>
+        <a href="<%= request.getRequestURI() %>">BACK</a>
   <%
-      for (int i = 0; i < authors.length; ++i) {
+      } else {
   %>
-        <li><%= authors[i] %></li>
+        <h3>You have selected author(s):</h3>
+        <ul>
+  <%
+        for (String author : authors) {
+          %>
+          <li><%= author %></li>
+          <%
+        }
+  %>
+        </ul>
+        <a href="<%= request.getRequestURI() %>">BACK</a>
   <%
       }
-  %>
-    </ul>
-    <a href="<%= request.getRequestURI() %>">BACK</a>
-  <%
-  }
+    }
   %>
 </body>
 </html>
